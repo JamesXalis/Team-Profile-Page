@@ -73,3 +73,14 @@ internQs = [
         choices: ["Engineer","Intern","None, I'd like to genrate webpage now."]
     },
 ];
+
+function init(){
+    inquirer.prompt(managerQs)
+    .then((answers)=>{
+        let nwManager= new Manager(answer.managerName, answers.managerId, answers.managerEmail, answers.managerNumber);
+        membersObjArray.push(newManager);
+        checkNextRole(answers);
+    })
+};
+
+init();
