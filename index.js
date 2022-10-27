@@ -77,10 +77,36 @@ internQs = [
 function init(){
     inquirer.prompt(managerQs)
     .then((answers)=>{
-        let nwManager= new Manager(answer.managerName, answers.managerId, answers.managerEmail, answers.managerNumber);
+        let newManager= new Manager(answer.managerName, answers.managerId, answers.managerEmail, answers.managerNumber);
         membersObjArray.push(newManager);
         checkNextRole(answers);
     })
 };
+function engineerPrompt(){
+    inquirer.prompt(engineerQs)
+    .then((answers)=>{
+        let newEngineer= new Engineer(answer.EngineerName, answers.EngineerId, answers.EngineerEmail, answers.EngineerGit);
+        membersObjArray.push(newEngineer);
+        checkNextRole(answers);
+    })
+};
+function internPrompt(){
+    inquirer.prompt(internQs)
+    .then((answers)=>{
+        let newIntern= new Intern(answer.internName, answers.internId, answers.internEmail, answers.internGit);
+        membersObjArray.push(newEngineer);
+        checkNextRole(answers);
+    })
+};
+
+function checkNextRole(){
+    if (answers.nextRole === "Engineer") engineerPrompt();
+    else if (answers.nextRole === "Intern")internPrompt();
+    else{
+        fs.writeFile("./dist/index.html", generateHTML(sortMembers(membersObjArray)), (err) => err ? console.log("failed") : console.log("success"))
+    }
+};
+
+
 
 init();
