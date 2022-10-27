@@ -1,5 +1,11 @@
 const fs = require("fs");
-const inquirer = require("inquirer")
+const inquirer = require("inquirer");
+const Employee = require("./lib/Employee");
+const Engineer = require("./lib/Engineer");
+const Intern = require("./lib/Intern");
+const Manager = require("./lib/Manager");
+
+
 
 managerQs = [
     {
@@ -74,36 +80,39 @@ internQs = [
     },
 ];
 
+const teamMembersArray = [];
+
+
 function init(){
     inquirer.prompt(managerQs)
     .then((answers)=>{
-        let newManager= new Manager(answer.managerName, answers.managerId, answers.managerEmail, answers.managerNumber);
-        membersObjArray.push(newManager);
+        let newManager= new Manager(answers.managerName, answers.managerId, answers.managerEmail, answers.managerNumber);
+        teamMembersArray.push(newManager);
         checkNextRole(answers);
     })
 };
 function engineerPrompt(){
     inquirer.prompt(engineerQs)
     .then((answers)=>{
-        let newEngineer= new Engineer(answer.EngineerName, answers.EngineerId, answers.EngineerEmail, answers.EngineerGit);
-        membersObjArray.push(newEngineer);
+        let newEngineer= new Engineer(answers.EngineerName, answers.EngineerId, answers.EngineerEmail, answers.EngineerGit);
+        teamMembersArray.push(newEngineer);
         checkNextRole(answers);
     })
 };
 function internPrompt(){
     inquirer.prompt(internQs)
     .then((answers)=>{
-        let newIntern= new Intern(answer.internName, answers.internId, answers.internEmail, answers.internGit);
-        membersObjArray.push(newEngineer);
+        let newIntern= new Intern(answers.internName, answers.internId, answers.internEmail, answers.internGit);
+        teamMembersArray.push(newIntern);
         checkNextRole(answers);
     })
 };
 
-function checkNextRole(){
+function checkNextRole(answers){
     if (answers.nextRole === "Engineer") engineerPrompt();
     else if (answers.nextRole === "Intern")internPrompt();
     else{
-        fs.writeFile("./dist/index.html", generateHTML(sortMembers(membersObjArray)), (err) => err ? console.log("failed") : console.log("success"))
+        fs.writeFile("./dist/index.html", generateHTML(sortMembers(teamMembersArray)), (err) => err ? console.log("failed") : console.log("success"))
     }
 };
 
